@@ -213,6 +213,21 @@ section{padding:84px 0}
 .price-box .amount{font-family:'Playfair Display',serif;font-size:56px;
   color:var(--gold-soft);line-height:1;display:block;margin-bottom:6px}
 .price-box .early{font-size:15px;color:rgba(247,244,239,.72);margin-bottom:26px}
+.price-box .old{text-decoration:line-through;opacity:.6;font-size:26px;margin-right:10px}
+.agrais-form{margin:26px 0 8px;text-align:left}
+.agrais-form p{font-size:14px;color:rgba(247,244,239,.8);margin:0 0 10px}
+.agrais-form form{display:flex;gap:8px;flex-wrap:wrap}
+.agrais-form input[type=email]{flex:1 1 160px;padding:12px 14px;font-size:15px;
+  background:rgba(247,244,239,.06);border:1px solid rgba(184,146,78,.5);
+  color:var(--cream);font-family:'Jost',sans-serif}
+.agrais-form input[type=email]::placeholder{color:rgba(247,244,239,.4)}
+.agrais-form button{padding:12px 18px;background:var(--gold);border:0;cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--navy-2)}
+.code-reveal{margin-top:14px;padding:16px;border:1px dashed var(--gold);
+  font-size:15px;color:var(--cream)}
+.code-reveal strong{font-family:'Playfair Display',serif;font-size:24px;
+  color:var(--gold-soft);letter-spacing:.08em;display:block;margin:6px 0}
 .incl{list-style:none;padding:0;margin:34px 0 0}
 .incl li{padding:9px 0 9px 26px;position:relative;font-size:16px;
   border-bottom:1px solid rgba(247,244,239,.1)}
@@ -308,7 +323,7 @@ figure{margin:0}
 
     <div class="hero-cta">
       <a class="btn" href="https://www.gunitaqueen.com/service-page/sald%C4%93jumu-sorbetu-meistarklase">Pieteikties</a>
-      <span class="btn-note">Agrā cena līdz 5. augustam</span>
+      <a class="btn-note" href="#agrais" style="text-decoration:underline;color:inherit">Agrā putniņa cena 145 € — saņem kodu ↓</a>
     </div>
   </div>
 </header>
@@ -550,9 +565,22 @@ figure{margin:0}
         <p style="margin-top:22px;font-size:16px">Tev jāatnāk tikai ar labu omu un termosomu.</p>
       </div>
 
-      <div class="price-box">
-        <span class="amount">165 €</span>
-        <p class="early">Agrā cena 145 € līdz 5. augustam</p>
+      <div class="price-box" id="agrais">
+        <span class="amount"><span class="old">165 €</span>145 €</span>
+        <p class="early">Agrā putniņa cena ar kodu — līdz 9. augustam</p>
+        <div class="agrais-form">
+          <p>Ievadi e-pastu, un atlaides kods parādīsies uzreiz šeit uz ekrāna:</p>
+          <form name="agrais-kods" method="POST" data-netlify="true" id="agrais-form">
+            <input type="hidden" name="form-name" value="agrais-kods">
+            <input type="email" name="email" required placeholder="Tavs e-pasts">
+            <button type="submit">Saņemt kodu</button>
+          </form>
+          <div class="code-reveal" id="code-reveal" hidden>
+            Tavs atlaides kods:
+            <strong>AGRAIS20</strong>
+            Ievadi to pieteikšanās solī laukā “Enter a promo code” — cena kļūs 145 €.
+          </div>
+        </div>
         <a class="btn" href="https://www.gunitaqueen.com/service-page/sald%C4%93jumu-sorbetu-meistarklase">Pieteikties</a>
         <p style="margin:24px 0 0;font-size:14px;color:rgba(247,244,239,.55)">Grupā 8–10 dalībnieces — turu to mazu, lai katrai pietiktu uzmanības.</p>
       </div>
@@ -661,5 +689,17 @@ figure{margin:0}
   </div>
 </footer>
 
+<script>
+document.getElementById('agrais-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var f = e.target;
+  var data = new URLSearchParams(new FormData(f)).toString();
+  fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:data})
+    .catch(function(){});
+  f.hidden = true;
+  var p = f.previousElementSibling; if(p) p.hidden = true;
+  document.getElementById('code-reveal').hidden = false;
+});
+</script>
 </body>
 </html>
